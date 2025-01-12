@@ -30,12 +30,12 @@ public class TraineeController {
     }
 
     @PutMapping("{id}")
-    public TraineeGetDto update(Long id, @Valid @RequestBody TraineePutDto dto) {
+    public TraineeGetDto update(@PathVariable Long id, @Valid @RequestBody TraineePutDto dto) {
         return service.update(id, dto);
     }
 
     @DeleteMapping("{id}")
-    public void delete(Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }
