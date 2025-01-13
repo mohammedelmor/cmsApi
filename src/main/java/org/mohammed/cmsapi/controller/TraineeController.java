@@ -24,6 +24,11 @@ public class TraineeController {
         return service.findAll(pageNumber, pageSize);
     }
 
+    @GetMapping("{id}")
+    public TraineeGetDto findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
     @PostMapping
     public TraineeGetDto create(@Valid @RequestBody TraineePostDto dto) {
         return service.create(dto);
