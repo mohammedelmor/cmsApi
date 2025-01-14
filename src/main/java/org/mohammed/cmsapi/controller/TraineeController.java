@@ -7,7 +7,9 @@ import org.mohammed.cmsapi.dto.TraineePostDto;
 import org.mohammed.cmsapi.dto.TraineePutDto;
 import org.mohammed.cmsapi.service.TraineeService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
 @RestController
@@ -42,5 +44,10 @@ public class TraineeController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadToTraineeBucket(@RequestBody MultipartFile file) throws Exception {
+        service.uploadToTraineeBucket(file);
     }
 }
