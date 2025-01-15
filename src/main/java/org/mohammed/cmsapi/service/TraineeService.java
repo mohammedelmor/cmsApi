@@ -2,6 +2,7 @@ package org.mohammed.cmsapi.service;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MinioClient;
+import io.minio.ObjectWriteResponse;
 import io.minio.PutObjectArgs;
 import io.minio.errors.*;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mohammed.cmsapi.dto.TraineeGetDto;
 import org.mohammed.cmsapi.dto.TraineePostDto;
 import org.mohammed.cmsapi.dto.TraineePutDto;
+import org.mohammed.cmsapi.exception.BucketNotFoundException;
 import org.mohammed.cmsapi.exception.TraineeNotFoundException;
 import org.mohammed.cmsapi.mapper.TraineeMapper;
 import org.mohammed.cmsapi.model.Trainee;
@@ -22,11 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -50,8 +50,9 @@ public class TraineeService {
         return mapper.toDto(trainee);
     }
 
-    public Collection<TraineeGetDto> findAllByName(String name) {
-        return repository.findAllByName(name).stream().map(mapper::toDto).toList();
+    public Page<TraineeGetDto> findAllByName(int pageNumber, int pageSize, String name) {
+        Sort sort = Sort.by(Sort.Order.asc("createdDate"));
+        return repository.findAllByName(PageRequest.of(pageNumber, pageSize, sort), name).map(mapper::toDto);
     }
 
     public TraineeGetDto create(@Valid TraineePostDto dto) {
@@ -75,15 +76,16 @@ public class TraineeService {
         repository.deleteById(id);
     }
 
-    public void uploadToTraineeBucket(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ObjectWriteResponse uploadToTraineeBucket(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket("trainees").build());
         if (!bucketExists) {
-            throw new RuntimeException("trainees Bucket Not Found");
+            throw new BucketNotFoundException("trainees Bucket Not Found");
         }
-        var uploaded = minioClient.putObject(PutObjectArgs
+        return minioClient.putObject(PutObjectArgs
                 .builder()
                 .bucket("trainees")
-                .object(file.getName())
+                .object(file.getOriginalFilename())
+                .contentType(file.getContentType())
                 .stream(file.getInputStream(), file.getSize(), -1).build());
     }
 

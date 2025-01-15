@@ -1,10 +1,10 @@
-package org.mohammed.cmsapi.mapper;
+package org.mohammed.cmsapi.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.mohammed.cmsapi.model.BaseEntity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -21,4 +21,8 @@ public class BodyType extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    private String image;
+
+    @Transient
+    private MultipartFile file;
 }
