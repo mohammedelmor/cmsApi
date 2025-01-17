@@ -6,4 +6,5 @@ public class TraineeConstants {
     }
 
     public static String BUCKET_NAME = "trainee";
+    public static String NOT_FOUND = "Can't find this trainee!";
 }

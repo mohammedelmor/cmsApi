@@ -1,5 +1,7 @@
 package org.mohammed.cmsapi.dto;
 
-public record MuscleBalanceGetDto(String name,
-                                  String image) {
+public record MuscleBalanceGetDto(Long id,
+                                  String name,
+                                  String image,
+                                  String fullPath) {
 }

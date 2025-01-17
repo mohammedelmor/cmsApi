@@ -2,15 +2,11 @@ package org.mohammed.cmsapi.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mohammed.cmsapi.dto.TraineeGetDto;
-import org.mohammed.cmsapi.dto.TraineePostDto;
-import org.mohammed.cmsapi.dto.TraineePutDto;
+import org.mohammed.cmsapi.dto.*;
 import org.mohammed.cmsapi.service.TraineeService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin("*")
 @RestController
@@ -48,9 +44,15 @@ public class TraineeController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadToTraineeBucket(@RequestBody MultipartFile file) throws Exception {
-        service.uploadToTraineeBucket(file);
-        return ResponseEntity.ok("Uploaded!");
+
+    @PostMapping("/{id}/updateBodyType")
+    public ResponseEntity<TraineeGetDto> updateBodyType(@PathVariable Long id, @Valid @RequestBody UpdateTraineeBodyTypeDto dto) {
+        return ResponseEntity.ok(service.updateBodyType(id, dto));
     }
+
+    @PostMapping("/{id}/updateMuscleBalance")
+    public ResponseEntity<TraineeGetDto> updateMuscleBalance(@PathVariable Long id, @Valid @RequestBody UpdateTraineeMuscleBalanceDto dto) {
+        return ResponseEntity.ok(service.updateMuscleBalance(id, dto));
+    }
+
 }

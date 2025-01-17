@@ -23,6 +23,7 @@ public class MuscleBalance extends BaseEntity {
     private String name;
 
     private String image;
+    private String fullPath;
 
     @Transient
     private MultipartFile file;
