@@ -8,11 +8,23 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
   servlet:
     multipart:
       max-request-size: 10MB
       max-file-size: 10MB
       enabled: true
+logging:
+  level:
+    org:
+      hibernate: DEBUG
+      springframework:
+        data:
+          jpa: DEBUG
 minio:
   endpoint: http://127.0.0.1:9000
   preview_endpoint: http://127.0.0.1:9001

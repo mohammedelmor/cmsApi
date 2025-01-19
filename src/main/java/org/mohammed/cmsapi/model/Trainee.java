@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.mohammed.cmsapi.model.embeddable.QuestionnaireCheck;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -34,10 +35,16 @@ public class Trainee extends BaseEntity {
     @JoinColumn(name = "muscle_balance_id")
     private MuscleBalance muscleBalance;
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<FitnessTest> fitnessTests;
+
     @ElementCollection
     @CollectionTable(
-            name = "user_questionnaire_checks",
-            joinColumns = @JoinColumn(name = "user_id")
+            name = "trainee_questionnaire_checks",
+            joinColumns = @JoinColumn(name = "trainee_id")
     )
     private Set<QuestionnaireCheck> questionnaireChecks;
 
@@ -46,10 +53,6 @@ public class Trainee extends BaseEntity {
         questionnaireCheck.setCheckName(checkName);
         questionnaireCheck.setIsChecked(true);
         this.questionnaireChecks.add(questionnaireCheck);
-    }
-
-    public void removeQuestionnaireCheck(String checkName) {
-        this.questionnaireChecks.removeIf(q -> q.getCheckName().equals(checkName));
     }
 
 }

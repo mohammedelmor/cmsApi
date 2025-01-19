@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mohammed.cmsapi.dto.*;
 import org.mohammed.cmsapi.service.TraineeService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class TraineeController {
 
     @PostMapping
     public ResponseEntity<TraineeGetDto> create(@Valid @RequestBody TraineePostDto dto) {
-        return ResponseEntity.ok(service.create(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping("{id}")
@@ -53,6 +54,11 @@ public class TraineeController {
     @PostMapping("/{id}/updateMuscleBalance")
     public ResponseEntity<TraineeGetDto> updateMuscleBalance(@PathVariable Long id, @Valid @RequestBody UpdateTraineeMuscleBalanceDto dto) {
         return ResponseEntity.ok(service.updateMuscleBalance(id, dto));
+    }
+
+    @PostMapping("/{id}/updateQuestionnaireCheck")
+    public ResponseEntity<TraineeGetDto> updateQuestionnaireCheck(@PathVariable Long id, @Valid @RequestBody QuestionnaireCheckDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.updateQuestionnaireCheck(id, dto));
     }
 
 }

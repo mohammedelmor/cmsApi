@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@CrossOrigin(value = "*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/bodyType")
 @RequiredArgsConstructor
@@ -27,12 +27,12 @@ public class BodyTypeController {
         return ResponseEntity.ok(service.findAll(pageNumber, pageSize));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<BodyTypeGetDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("name/{name}")
     public ResponseEntity<BodyTypeGetDto> findByName(@PathVariable String name) {
         return ResponseEntity.ok(service.findByName(name));
     }
@@ -47,12 +47,17 @@ public class BodyTypeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<BodyTypeGetDto> update(@PathVariable Long id, @Valid @ModelAttribute BodyTypePostDto dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
-    @DeleteMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions(@PathVariable Long id) {
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

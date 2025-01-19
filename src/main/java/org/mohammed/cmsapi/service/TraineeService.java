@@ -19,17 +19,13 @@ import org.mohammed.cmsapi.mapper.TraineeMapper;
 import org.mohammed.cmsapi.model.BodyType;
 import org.mohammed.cmsapi.model.MuscleBalance;
 import org.mohammed.cmsapi.model.Trainee;
+import org.mohammed.cmsapi.model.embeddable.QuestionnaireCheck;
 import org.mohammed.cmsapi.repository.TraineeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -106,6 +102,13 @@ public class TraineeService {
             log.error(e.getMessage());
             throw e;
         }
+    }
+
+    public TraineeGetDto updateQuestionnaireCheck(Long traineeId, @Valid QuestionnaireCheckDto dto) {
+        Trainee trainee = getById(traineeId);
+        trainee.getQuestionnaireChecks().clear();
+        dto.checkNames().forEach(trainee::addQuestionnaireCheck);
+        return mapper.toDto(repository.save(trainee));
     }
 
 }
