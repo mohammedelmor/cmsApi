@@ -12,6 +12,7 @@ public interface FitnessTestProjection {
     Long getId();
     String getExercise();
     Integer getRepetition();
+    Integer getWeight();
     Integer getDuration();
     String getComment();
     TraineeProjection getTrainee();
@@ -21,10 +22,24 @@ public interface FitnessTestProjection {
         String getName();
         Integer getAge();
         String getPhoneNumber();
-        BodyTypeGetDto getBodyType();
-        MuscleBalanceGetDto getMuscleBalance();
+        BodyTypeProjection getBodyType();
+        MuscleBalanceProjection getMuscleBalance();
         Set<String> getQuestionnaireChecks();
         LocalDateTime getCreatedDate();
         LocalDateTime getLastModifiedDate();
+    }
+
+    interface BodyTypeProjection {
+        Long getId();
+        String getName();
+        String getImage();
+        String getFullpath();
+    }
+
+    interface MuscleBalanceProjection {
+        Long getId();
+        String getName();
+        String getImage();
+        String getFullpath();
     }
 }

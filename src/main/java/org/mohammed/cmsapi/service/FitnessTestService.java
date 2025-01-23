@@ -47,6 +47,7 @@ public class FitnessTestService {
         FitnessTest fitnessTest = repository.findById(id)
                 .map(test -> {
                     test.setExercise(dto.exercise());
+                    test.setWeight(dto.weight());
                     test.setRepetition(dto.repetition());
                     test.setDuration(dto.duration());
                     test.setComment(dto.comment());

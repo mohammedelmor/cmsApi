@@ -19,6 +19,7 @@ public class FitnessTest extends BaseEntity{
 
     private String exercise;
 
+    private Integer weight;
     private Integer repetition;
 
     private Integer duration;

@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public interface FitnessTestRepository extends JpaRepository<FitnessTest, Long> {
 
-    @Query("SELECT f FROM FitnessTest f JOIN FETCH f.trainee WHERE f.trainee.id = :traineeId")
+    @Query("SELECT f FROM FitnessTest f JOIN FETCH f.trainee WHERE f.trainee.id = :traineeId order by f.createdDate asc")
     Collection<FitnessTestProjection> findAllByTraineeId(Long traineeId);
 
 }
